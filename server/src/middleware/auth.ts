@@ -4,6 +4,8 @@ import { config } from '../config/env';
 
 export interface AuthRequest extends Request {
   admin?: any;
+  file?: any;
+  files?: any;
 }
 
 export const authenticateAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
