@@ -1,0 +1,279 @@
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Admin {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  name         String
+  role         String     @default("ADMIN")
+  isActive     Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  auditLogs    AuditLog[]
+}
+
+model Theatre {
+  id               String            @id @default(uuid())
+  name             String
+  slug             String            @unique
+  description      String
+  capacity         Int
+  location         String
+  facilities       String            // JSON string
+  basePrice        Float
+  status           String            @default("ACTIVE")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  images           TheatreImage[]
+  slots            Slot[]
+  bookings         Booking[]
+  occasionTheatres OccasionTheatre[]
+}
+
+model TheatreImage {
+  id           String   @id @default(uuid())
+  theatreId    String
+  imageUrl     String
+  altText      String
+  displayOrder Int      @default(0)
+  theatre      Theatre  @relation(fields: [theatreId], references: [id], onDelete: Cascade)
+}
+
+model Occasion {
+  id               String            @id @default(uuid())
+  name             String
+  slug             String            @unique
+  description      String
+  imageUrl         String?
+  displayOrder     Int               @default(0)
+  isFeatured       Boolean           @default(false)
+  isActive         Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  occasionTheatres OccasionTheatre[]
+  occasionPackages OccasionPackage[]
+  occasionAddons   OccasionAddon[]
+  bookings         Booking[]
+}
+
+model Package {
+  id               String            @id @default(uuid())
+  name             String
+  slug             String            @unique
+  description      String
+  price            Float
+  durationMinutes  Int
+  features         String            // JSON string
+  isActive         Boolean           @default(true)
+  displayOrder     Int               @default(0)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  occasionPackages OccasionPackage[]
+  bookings         Booking[]
+}
+
+model Addon {
+  id             String          @id @default(uuid())
+  name           String
+  description    String
+  price          Float
+  imageUrl       String?
+  isActive       Boolean         @default(true)
+  displayOrder   Int             @default(0)
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  occasionAddons OccasionAddon[]
+  bookingAddons  BookingAddon[]
+}
+
+model OccasionTheatre {
+  id         String   @id @default(uuid())
+  occasionId String
+  theatreId  String
+  occasion   Occasion @relation(fields: [occasionId], references: [id], onDelete: Cascade)
+  theatre    Theatre  @relation(fields: [theatreId], references: [id], onDelete: Cascade)
+
+  @@unique([occasionId, theatreId])
+}
+
+model OccasionPackage {
+  id         String   @id @default(uuid())
+  occasionId String
+  packageId  String
+  occasion   Occasion @relation(fields: [occasionId], references: [id], onDelete: Cascade)
+  package    Package  @relation(fields: [packageId], references: [id], onDelete: Cascade)
+
+  @@unique([occasionId, packageId])
+}
+
+model OccasionAddon {
+  id         String   @id @default(uuid())
+  occasionId String
+  addonId    String
+  occasion   Occasion @relation(fields: [occasionId], references: [id], onDelete: Cascade)
+  addon      Addon    @relation(fields: [addonId], references: [id], onDelete: Cascade)
+
+  @@unique([occasionId, addonId])
+}
+
+model Customer {
+  id        String    @id @default(uuid())
+  name      String
+  phone     String    @unique
+  email     String?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  bookings  Booking[]
+}
+
+model Slot {
+  id               String    @id @default(uuid())
+  theatreId        String
+  date             DateTime
+  startTime        String
+  endTime          String
+  priceOverride    Float?
+  status           String    @default("AVAILABLE")
+  holdExpiresAt    DateTime?
+  heldByBookingId  String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  theatre          Theatre   @relation(fields: [theatreId], references: [id], onDelete: Cascade)
+  bookings         Booking[]
+
+  @@index([theatreId, date])
+  @@index([status])
+}
+
+model Booking {
+  id               String         @id @default(uuid())
+  bookingReference String         @unique
+  customerId       String
+  theatreId        String
+  occasionId       String
+  packageId        String
+  slotId           String
+  date             DateTime
+  startTime        String
+  endTime          String
+  guestCount       Int
+  specialRequest   String?
+  subtotal         Float
+  tax              Float
+  discount         Float          @default(0)
+  discountCode     String?
+  total            Float
+  advanceAmount    Float          @default(0)
+  remainingAmount  Float          @default(0)
+  paymentType      String         @default("FULL")
+  remainingPaymentStatus String   @default("PENDING")
+  bookingSource    String         @default("ONLINE")
+  bookingStatus    String         @default("DRAFT")
+  paymentStatus    String         @default("PENDING")
+  holdExpiresAt    DateTime?
+  createdBy        String?
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+  
+  customer         Customer       @relation(fields: [customerId], references: [id], onDelete: Restrict)
+  theatre          Theatre        @relation(fields: [theatreId], references: [id], onDelete: Restrict)
+  occasion         Occasion       @relation(fields: [occasionId], references: [id], onDelete: Restrict)
+  package          Package        @relation(fields: [packageId], references: [id], onDelete: Restrict)
+  slot             Slot           @relation(fields: [slotId], references: [id], onDelete: Restrict)
+  
+  bookingAddons    BookingAddon[]
+  payments         Payment[]
+
+  @@index([bookingReference])
+  @@index([date])
+  @@index([bookingStatus])
+  @@index([paymentStatus])
+}
+
+model BookingAddon {
+  id         String  @id @default(uuid())
+  bookingId  String
+  addonId    String
+  addonName  String
+  addonPrice Float
+  booking    Booking @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+  addon      Addon   @relation(fields: [addonId], references: [id], onDelete: Restrict)
+}
+
+model Payment {
+  id                 String    @id @default(uuid())
+  bookingId          String
+  amount             Float
+  paymentType        String    @default("FULL")
+  paymentMethod      String    @default("UPI")
+  upiUri             String?
+  upiTransactionRef  String?
+  screenshotUrl      String?
+  status             String    @default("PENDING")
+  verifiedBy         String?
+  verifiedAt         DateTime?
+  rejectionReason    String?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  booking            Booking   @relation(fields: [bookingId], references: [id], onDelete: Cascade)
+
+  @@index([status])
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  category  String
+  updatedAt DateTime @updatedAt
+}
+
+model AuditLog {
+  id            String   @id @default(uuid())
+  adminId       String
+  action        String
+  entityType    String
+  entityId      String
+  previousValue String?
+  newValue      String?
+  ipAddress     String?
+  createdAt     DateTime @default(now())
+  admin         Admin    @relation(fields: [adminId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id           String   @id @default(uuid())
+  customerName String
+  rating       Int
+  comment      String
+  isActive     Boolean  @default(true)
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+}
+
+model Coupon {
+  id                String    @id @default(uuid())
+  code              String    @unique
+  description       String?
+  discountType      String    @default("PERCENTAGE") // PERCENTAGE or FIXED
+  discountValue     Float
+  minOrderAmount    Float     @default(0)
+  maxDiscountAmount Float?
+  startDate         DateTime?
+  endDate           DateTime?
+  usageLimit        Int?
+  usageCount        Int       @default(0)
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+
+  @@index([code])
+  @@index([isActive])
+}

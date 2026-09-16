@@ -1,0 +1,122 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-brand-darker text-white font-body transition-colors duration-300;
+  }
+
+  ::selection {
+    @apply bg-brand-gold text-brand-darker;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    @apply bg-white/5 backdrop-blur-md border border-white/10 shadow-xl;
+  }
+}
+
+/* Light Theme Overrides (Warm Champagne Luxury Palette) */
+html.light {
+  color-scheme: light;
+}
+
+html.light body {
+  background-color: #FAF8F5 !important;
+  color: #1A1816 !important;
+}
+
+html.light .bg-brand-darker {
+  background-color: #FAF8F5 !important;
+}
+
+html.light .bg-brand-dark {
+  background-color: #FFFFFF !important;
+}
+
+html.light .bg-brand-dark\/60 {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+}
+
+html.light .bg-brand-darker\/80 {
+  background-color: rgba(245, 241, 233, 0.95) !important;
+}
+
+html.light .bg-brand-darker\/50 {
+  background-color: rgba(245, 241, 233, 0.6) !important;
+}
+
+html.light .border-gray-800,
+html.light .border-gray-900,
+html.light .border-gray-700 {
+  border-color: #E6DFD3 !important;
+}
+
+html.light .bg-gray-800,
+html.light .bg-gray-900,
+html.light .bg-gray-950 {
+  background-color: #EFE9DE !important;
+}
+
+html.light .text-white {
+  color: #1A1816 !important;
+}
+
+html.light .text-gray-100,
+html.light .text-gray-200,
+html.light .text-gray-300 {
+  color: #38332E !important;
+}
+
+html.light .text-gray-400,
+html.light .text-gray-500 {
+  color: #686259 !important;
+}
+
+html.light input,
+html.light select,
+html.light textarea {
+  background-color: #FFFFFF !important;
+  color: #1A1816 !important;
+  border-color: #D8CEBD !important;
+}
+
+html.light input::placeholder,
+html.light textarea::placeholder {
+  color: #9E9689 !important;
+}
+
+html.light .glass-panel {
+  background-color: rgba(255, 255, 255, 0.85) !important;
+  border-color: rgba(212, 175, 55, 0.25) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050508;
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: #FAF8F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2a35;
+  border-radius: 4px;
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: #D8CEBD;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D4AF37;
+}
