@@ -57,8 +57,11 @@ export const LocationSection = () => {
                 <div className="flex items-start gap-4">
                   <Phone className="mt-1 h-5 w-5 shrink-0 text-brand-gold" />
                   <div>
-                    <h4 className="mb-1 font-heading text-base text-white">Contact</h4>
-                    <p className="text-sm leading-6 text-gray-400">{settings?.businessPhone || '+91 99999 99999'}<br />{settings?.businessEmail || 'hello@skylite.com'}</p>
+                    <h4 className="mb-1 font-heading text-base text-white">Contact & Bookings</h4>
+                    <p className="text-sm leading-6 text-gray-300">
+                      <a href="tel:8008292789" className="hover:text-brand-gold transition-colors block">Phaneendra: +91 80082 92789</a>
+                      <a href="tel:9985631121" className="hover:text-brand-gold transition-colors block">Praveen: +91 99856 31121</a>
+                    </p>
                   </div>
                 </div>
               </div>

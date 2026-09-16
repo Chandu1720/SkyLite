@@ -39,9 +39,16 @@ export const Footer = () => {
                 <MapPin className="w-5 h-5 text-brand-gold shrink-0" />
                 <span>Near Hanuman Temple, Pappannareddy Layout, signal<br />Garvebhavi Palya, Bengaluru, Karnataka 560068</span>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-5 h-5 text-brand-gold shrink-0" />
-                <span>+91 99999 99999</span>
+              <li className="flex items-start gap-3">
+                <Phone className="w-5 h-5 text-brand-gold shrink-0 mt-0.5" />
+                <div className="flex flex-col gap-1">
+                  <a href="tel:8008292789" className="hover:text-brand-gold transition-colors">
+                    Phaneendra: +91 80082 92789
+                  </a>
+                  <a href="tel:9985631121" className="hover:text-brand-gold transition-colors">
+                    Praveen: +91 99856 31121
+                  </a>
+                </div>
               </li>
               <li className="flex items-center gap-3">
                 <Mail className="w-5 h-5 text-brand-gold shrink-0" />

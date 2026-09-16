@@ -96,11 +96,127 @@ export const ContactPage: React.FC = () => {
           </motion.p>
         </div>
 
-        {/* Contact Info Cards */}
+        {/* Dedicated Event Coordinators & Booking Desk Section */}
+        <div className="mb-14">
+          <div className="text-center mb-6">
+            <h2 className="text-xl sm:text-2xl font-heading font-bold text-white mb-1 flex items-center justify-center gap-2">
+              <Sparkles className="w-5 h-5 text-brand-gold" />
+              Direct Event Managers & Booking Concierge
+            </h2>
+            <p className="text-xs sm:text-sm text-gray-400">
+              Speak directly with our dedicated celebration hosts for instant slot confirmation and customized decoration packages.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Coordinator 1: Phaneendra */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.1 }}
+              className="bg-gradient-to-br from-brand-dark/95 via-brand-dark to-black/80 border-2 border-brand-gold/30 hover:border-brand-gold p-6 sm:p-7 rounded-3xl shadow-2xl transition-all relative overflow-hidden group"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/10 rounded-full blur-2xl pointer-events-none" />
+              
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-5">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-gold/20 to-brand-accent/20 border border-brand-gold/40 flex items-center justify-center text-brand-gold shadow-lg shadow-brand-gold/10 group-hover:scale-105 transition-transform">
+                    <span className="font-heading font-bold text-xl">PH</span>
+                  </div>
+                  <div>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-brand-gold uppercase tracking-wider bg-brand-gold/15 px-2.5 py-0.5 rounded-full mb-1">
+                      Event Specialist
+                    </span>
+                    <h3 className="font-heading font-bold text-2xl text-white">Phaneendra</h3>
+                    <p className="text-xs text-gray-400">Bookings, Surprise Decor & Proposals</p>
+                  </div>
+                </div>
+
+                <div className="text-left sm:text-right">
+                  <span className="text-xs text-gray-400 block">Mobile Number</span>
+                  <a href="tel:8008292789" className="text-lg font-mono font-bold text-white hover:text-brand-gold transition-colors">
+                    +91 80082 92789
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-4 border-t border-gray-800">
+                <a
+                  href="tel:8008292789"
+                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-brand-dark font-bold text-xs sm:text-sm border border-brand-gold/30 transition-all active:scale-95"
+                >
+                  <Phone className="w-4 h-4" />
+                  <span>Call Phaneendra</span>
+                </a>
+                <a
+                  href="https://wa.me/918008292789?text=Hi%20Phaneendra,%20I%20would%20like%20to%20inquire%20about%20booking%20SkyLite%20Private%20Theatre."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500/15 hover:bg-emerald-500 text-emerald-400 hover:text-brand-dark font-bold text-xs sm:text-sm border border-emerald-500/30 transition-all active:scale-95"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  <span>WhatsApp</span>
+                </a>
+              </div>
+            </motion.div>
+
+            {/* Coordinator 2: Praveen */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="bg-gradient-to-br from-brand-dark/95 via-brand-dark to-black/80 border-2 border-brand-gold/30 hover:border-brand-gold p-6 sm:p-7 rounded-3xl shadow-2xl transition-all relative overflow-hidden group"
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 bg-brand-gold/10 rounded-full blur-2xl pointer-events-none" />
+              
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-5">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-brand-gold/20 to-brand-accent/20 border border-brand-gold/40 flex items-center justify-center text-brand-gold shadow-lg shadow-brand-gold/10 group-hover:scale-105 transition-transform">
+                    <span className="font-heading font-bold text-xl">PR</span>
+                  </div>
+                  <div>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-brand-gold uppercase tracking-wider bg-brand-gold/15 px-2.5 py-0.5 rounded-full mb-1">
+                      Event Specialist
+                    </span>
+                    <h3 className="font-heading font-bold text-2xl text-white">Praveen</h3>
+                    <p className="text-xs text-gray-400">Celebration Host & Venue Operations</p>
+                  </div>
+                </div>
+
+                <div className="text-left sm:text-right">
+                  <span className="text-xs text-gray-400 block">Mobile Number</span>
+                  <a href="tel:9985631121" className="text-lg font-mono font-bold text-white hover:text-brand-gold transition-colors">
+                    +91 99856 31121
+                  </a>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-4 border-t border-gray-800">
+                <a
+                  href="tel:9985631121"
+                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-brand-gold/15 hover:bg-brand-gold text-brand-gold hover:text-brand-dark font-bold text-xs sm:text-sm border border-brand-gold/30 transition-all active:scale-95"
+                >
+                  <Phone className="w-4 h-4" />
+                  <span>Call Praveen</span>
+                </a>
+                <a
+                  href="https://wa.me/919985631121?text=Hi%20Praveen,%20I%20would%20like%20to%20inquire%20about%20booking%20SkyLite%20Private%20Theatre."
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-emerald-500/15 hover:bg-emerald-500 text-emerald-400 hover:text-brand-dark font-bold text-xs sm:text-sm border border-emerald-500/30 transition-all active:scale-95"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  <span>WhatsApp</span>
+                </a>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+
+        {/* General Contact Info Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-14">
           {/* Card 1: Phone */}
-          <motion.a
-            href={`tel:${businessPhone}`}
+          <motion.div
             whileHover={{ y: -4 }}
             className="bg-brand-dark/90 backdrop-blur-md border border-gray-800 hover:border-brand-gold/50 p-6 rounded-3xl shadow-xl transition-all group flex flex-col justify-between"
           >
@@ -108,17 +224,22 @@ export const ContactPage: React.FC = () => {
               <div className="w-12 h-12 rounded-2xl bg-brand-gold/10 border border-brand-gold/20 flex items-center justify-center text-brand-gold mb-4 group-hover:scale-110 transition-transform">
                 <Phone className="w-6 h-6" />
               </div>
-              <h3 className="font-heading font-bold text-lg text-white mb-1">Call Us</h3>
-              <p className="text-xs text-gray-400 mb-3">Direct line for fast inquiries</p>
+              <h3 className="font-heading font-bold text-lg text-white mb-1">Direct Lines</h3>
+              <p className="text-xs text-gray-400 mb-3">Instant booking assistance</p>
             </div>
-            <span className="font-semibold text-sm text-brand-gold group-hover:text-white transition-colors">
-              {businessPhone}
-            </span>
-          </motion.a>
+            <div className="space-y-1">
+              <a href="tel:8008292789" className="font-semibold text-xs text-brand-gold hover:text-white transition-colors block">
+                Phaneendra: +91 80082 92789
+              </a>
+              <a href="tel:9985631121" className="font-semibold text-xs text-brand-gold hover:text-white transition-colors block">
+                Praveen: +91 99856 31121
+              </a>
+            </div>
+          </motion.div>
 
           {/* Card 2: WhatsApp */}
           <motion.a
-            href={`https://wa.me/${cleanWhatsapp}?text=Hi%20SkyLite%20Private%20Theatre,%20I%20have%20an%20inquiry.`}
+            href="https://wa.me/918008292789?text=Hi%20SkyLite%20Private%20Theatre,%20I%20have%20an%20inquiry."
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ y: -4 }}
@@ -129,7 +250,7 @@ export const ContactPage: React.FC = () => {
                 <MessageSquare className="w-6 h-6" />
               </div>
               <h3 className="font-heading font-bold text-lg text-white mb-1">WhatsApp Concierge</h3>
-              <p className="text-xs text-gray-400 mb-3">Instant chat & package menus</p>
+              <p className="text-xs text-gray-400 mb-3">Instant chat & decoration menus</p>
             </div>
             <span className="font-semibold text-sm text-green-400 group-hover:text-white transition-colors flex items-center gap-1">
               Chat on WhatsApp <ExternalLink className="w-3.5 h-3.5" />
@@ -147,7 +268,7 @@ export const ContactPage: React.FC = () => {
                 <Mail className="w-6 h-6" />
               </div>
               <h3 className="font-heading font-bold text-lg text-white mb-1">Email Support</h3>
-              <p className="text-xs text-gray-400 mb-3">For partnerships & corporate</p>
+              <p className="text-xs text-gray-400 mb-3">For corporate & bulk bookings</p>
             </div>
             <span className="font-semibold text-sm text-blue-400 group-hover:text-white transition-colors break-all">
               {businessEmail}
