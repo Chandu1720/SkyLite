@@ -21,6 +21,7 @@ async function main() {
   await prisma.occasion.deleteMany();
   await prisma.theatreImage.deleteMany();
   await prisma.theatre.deleteMany();
+  await prisma.coupon.deleteMany();
   await prisma.admin.deleteMany();
   await prisma.setting.deleteMany();
   await prisma.review.deleteMany();
@@ -171,10 +172,48 @@ async function main() {
     { key: 'advance_payment_value', value: '30', category: 'Payment' },
     { key: 'allow_full_payment', value: 'true', category: 'Payment' },
     { key: 'allow_pay_at_venue', value: 'true', category: 'Payment' },
+    { key: 'welcome_popup_enabled', value: 'true', category: 'General' },
+    { key: 'welcome_popup_title', value: 'Exclusive Welcome Offer ✨', category: 'General' },
+    { key: 'welcome_popup_subtitle', value: 'Get 20% OFF on your very first private theatre booking experience!', category: 'General' },
+    { key: 'welcome_popup_coupon_code', value: 'WELCOME20', category: 'General' },
+    { key: 'welcome_popup_discount_text', value: 'FLAT 20% OFF', category: 'General' },
   ];
 
   for (const setting of settingsData) {
     await prisma.setting.create({ data: setting });
+  }
+
+  // Create Coupons
+  const couponsData = [
+    {
+      code: 'WELCOME20',
+      description: 'First-Time Visitor Welcome Promo',
+      discountType: 'PERCENTAGE',
+      discountValue: 20,
+      minOrderAmount: 1000,
+      maxDiscountAmount: 1000,
+      isActive: true,
+    },
+    {
+      code: 'SKYLITE10',
+      description: '10% Sitewide Discount',
+      discountType: 'PERCENTAGE',
+      discountValue: 10,
+      minOrderAmount: 1500,
+      isActive: true,
+    },
+    {
+      code: 'CELEBRATE500',
+      description: 'Flat ₹500 Celebration Offer',
+      discountType: 'FIXED',
+      discountValue: 500,
+      minOrderAmount: 2000,
+      isActive: true,
+    },
+  ];
+
+  for (const coupon of couponsData) {
+    await prisma.coupon.create({ data: coupon });
   }
 
   // Create Reviews
