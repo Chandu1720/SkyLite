@@ -150,7 +150,7 @@ ${upiRef || 'Submitted'}
 
 Please verify and confirm my booking.`;
 
-    return `https://wa.me/919876543210?text=${encodeURIComponent(msg)}`;
+    return `https://wa.me/918008292789?text=${encodeURIComponent(msg)}`;
   };
 
   if (loading) {

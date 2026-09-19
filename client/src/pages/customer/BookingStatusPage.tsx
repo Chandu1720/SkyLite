@@ -172,7 +172,7 @@ export const BookingStatusPage: React.FC = () => {
               )}
 
               <a
-                href={`https://wa.me/919876543210?text=Hi%20SkyLite,%20Checking%20status%20for%20Booking%20ID:%20${booking.bookingReference}`}
+                href={`https://wa.me/918008292789?text=Hi%20SkyLite,%20Checking%20status%20for%20Booking%20ID:%20${booking.bookingReference}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-xs text-green-400 hover:text-green-300 transition-colors"

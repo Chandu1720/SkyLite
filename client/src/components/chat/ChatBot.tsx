@@ -147,7 +147,7 @@ export const ChatBot: React.FC = () => {
 
   const handleActionClick = (actionObj: { label: string; action: string; link?: string }) => {
     if (actionObj.action === 'whatsapp') {
-      window.open('https://wa.me/919876543210?text=Hi%20SkyLite,%20I%20have%20a%20query%20regarding%20booking%20a%20private%20theatre.', '_blank');
+      window.open('https://wa.me/918008292789?text=Hi%20SkyLite,%20I%20have%20a%20query%20regarding%20booking%20a%20private%20theatre.', '_blank');
     } else if (actionObj.action === 'query') {
       handleSend(actionObj.label);
     }

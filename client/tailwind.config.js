@@ -8,11 +8,17 @@ export default {
     extend: {
       colors: {
         brand: {
-          gold: '#D4AF37',
-          dark: '#0A0A0F',
-          darker: '#050508',
-          accent: '#C9A84C',
-          rose: '#E8336D',
+          gold: '#3B82F6', // Mapped to electric radiant blue
+          primary: '#2563EB', // Royal Blue
+          secondary: '#38BDF8', // Cyan / Sky Blue
+          accent: '#60A5FA', // Ice Blue
+          sapphire: '#1D4ED8', // Deep Sapphire
+          royal: '#1E40AF', // Royal Navy
+          dark: '#0B132B', // Deep Luxury Navy
+          darker: '#060B18', // Cosmic Midnight Navy
+          light: '#F8FAFC', // Crisp Ice White
+          goldAccent: '#F59E0B', // Sunburst Gold
+          rose: '#EC4899',
         },
       },
       fontFamily: {
@@ -39,8 +45,8 @@ export default {
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         pulseGlow: {
-          '0%, 100%': { opacity: '1', boxShadow: '0 0 15px rgba(212, 175, 55, 0.2)' },
-          '50%': { opacity: '.8', boxShadow: '0 0 25px rgba(212, 175, 55, 0.5)' },
+          '0%, 100%': { opacity: '1', boxShadow: '0 0 15px rgba(59, 130, 246, 0.3)' },
+          '50%': { opacity: '.8', boxShadow: '0 0 25px rgba(59, 130, 246, 0.6)' },
         },
       },
     },

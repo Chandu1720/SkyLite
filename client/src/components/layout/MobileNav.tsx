@@ -32,7 +32,10 @@ export const MobileNav: React.FC<MobileNavProps> = ({ isOpen, onClose, links }) 
             className="fixed right-0 top-0 bottom-0 z-50 w-64 bg-brand-darker border-l border-gray-800 p-6 flex flex-col md:hidden"
           >
             <div className="flex items-center justify-between mb-8">
-              <span className="font-heading text-xl font-bold text-brand-gold">MENU</span>
+              <div className="flex items-center gap-2">
+                <img src="/logo.png" alt="SkyLite" className="w-6 h-6 object-contain rounded-full" />
+                <span className="font-heading text-lg font-bold text-blue-500">SKYLITE</span>
+              </div>
               <div className="flex items-center gap-2">
                 <ThemeToggle />
                 <button onClick={onClose} className="text-gray-400 hover:text-white p-1" aria-label="Close menu">
@@ -47,7 +50,7 @@ export const MobileNav: React.FC<MobileNavProps> = ({ isOpen, onClose, links }) 
                   key={link.path} 
                   to={link.path}
                   onClick={onClose}
-                  className="text-lg font-medium text-gray-300 hover:text-brand-gold font-body"
+                  className="text-lg font-medium text-gray-300 hover:text-blue-400 font-body"
                 >
                   {link.name}
                 </Link>

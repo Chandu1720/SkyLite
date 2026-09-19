@@ -63,7 +63,7 @@ export const PaymentStatus: React.FC<PaymentStatusProps> = ({ status, bookingRef
       </div>
 
       <a 
-        href={`https://wa.me/919876543210?text=Hi, regarding my booking ${bookingRef} (Status: ${status})`}
+        href={`https://wa.me/918008292789?text=Hi, regarding my booking ${bookingRef} (Status: ${status})`}
         target="_blank"
         rel="noopener noreferrer"
         className="w-full py-3 bg-[#25D366] text-white rounded-lg font-body font-medium flex items-center justify-center hover:bg-[#128C7E] transition-colors"

@@ -74,7 +74,10 @@ export const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({ children
           <div className="fixed inset-0 bg-black/80" onClick={() => setSidebarOpen(false)} />
           <div className="fixed inset-y-0 left-0 w-64 bg-brand-dark border-r border-gray-800 flex flex-col">
             <div className="flex items-center justify-between p-4 border-b border-gray-800">
-              <span className="text-xl font-heading font-bold text-brand-gold">SkyLite Admin</span>
+              <div className="flex items-center gap-2.5">
+                <img src="/logo.png" alt="SkyLite Logo" className="w-8 h-8 object-contain rounded-full border border-blue-400/20" />
+                <span className="text-lg font-heading font-bold text-blue-500">SkyLite Admin</span>
+              </div>
               <button onClick={() => setSidebarOpen(false)} className="text-gray-400 hover:text-white">
                 <X className="w-6 h-6" />
               </button>
@@ -90,7 +93,7 @@ export const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({ children
                         onClick={() => setSidebarOpen(false)}
                         className={`flex items-center justify-between px-3 py-2.5 rounded-md transition-colors ${
                           isActive
-                            ? 'bg-brand-gold/10 text-brand-gold font-semibold'
+                            ? 'bg-blue-600 text-white font-semibold shadow-md shadow-blue-500/20'
                             : 'text-gray-400 hover:text-white hover:bg-white/5'
                         }`}
                       >
@@ -115,8 +118,9 @@ export const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({ children
 
       {/* Desktop sidebar */}
       <div className="hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-50 lg:block lg:w-64 bg-brand-dark border-r border-gray-800">
-        <div className="flex h-16 items-center px-6 border-b border-gray-800">
-          <span className="text-xl font-heading font-bold text-brand-gold">SkyLite Admin</span>
+        <div className="flex h-16 items-center gap-3 px-6 border-b border-gray-800">
+          <img src="/logo.png" alt="SkyLite Logo" className="w-8 h-8 object-contain rounded-full border border-blue-400/20" />
+          <span className="text-lg font-heading font-bold text-blue-500">SkyLite Admin</span>
         </div>
         <nav className="flex flex-col h-[calc(100vh-4rem)] overflow-y-auto py-4">
           <ul className="space-y-1 px-3">
@@ -128,7 +132,7 @@ export const AdminLayout: React.FC<{ children?: React.ReactNode }> = ({ children
                     to={item.href}
                     className={`flex items-center justify-between px-3 py-2.5 rounded-lg transition-colors ${
                       isActive
-                        ? 'bg-brand-gold/10 text-brand-gold font-medium border border-brand-gold/20'
+                        ? 'bg-blue-600 text-white font-medium shadow-md shadow-blue-500/20'
                         : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                   >

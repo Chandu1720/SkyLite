@@ -10,8 +10,8 @@ export const Hero = () => {
       {/* Background with luxury cinema ambiance */}
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-gradient-to-b from-brand-darker/70 via-brand-darker/85 to-brand-darker z-10" />
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-brand-gold/15 rounded-full blur-[140px] pointer-events-none" />
-        <div className="absolute bottom-1/3 left-1/4 w-[400px] h-[300px] bg-brand-rose/10 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-blue-600/20 rounded-full blur-[140px] pointer-events-none" />
+        <div className="absolute bottom-1/3 left-1/4 w-[400px] h-[300px] bg-sky-500/15 rounded-full blur-[120px] pointer-events-none" />
         <div 
           className="w-full h-full bg-[url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?q=80&w=2070')] bg-cover bg-center opacity-25 scale-105" 
           style={{ transform: 'scale(1.03)', transition: 'transform 10s ease-out' }}
@@ -24,9 +24,9 @@ export const Hero = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-gold/10 border border-brand-gold/30 text-brand-gold text-xs md:text-sm font-semibold mb-6 shadow-[0_0_20px_rgba(212,175,55,0.15)]"
+          className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/30 text-blue-400 text-xs md:text-sm font-semibold mb-6 shadow-[0_0_20px_rgba(37,99,235,0.2)]"
         >
-          <Sparkles className="w-4 h-4 text-brand-gold animate-pulse" />
+          <Sparkles className="w-4 h-4 text-blue-400 animate-pulse" />
           <span>India's Premier Private Cinema & Celebration Experience</span>
         </motion.div>
 
@@ -38,7 +38,7 @@ export const Hero = () => {
           className="font-heading text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold text-white leading-[1.1] mb-6 max-w-5xl tracking-tight"
         >
           Your Private Theatre.<br/>
-          <span className="bg-gradient-to-r from-[#F7E7B4] via-brand-gold to-[#D4AF37] bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-blue-400 via-sky-300 to-white bg-clip-text text-transparent">
             Your Special Moment.
           </span>
         </motion.h1>
@@ -60,20 +60,20 @@ export const Hero = () => {
           transition={{ duration: 0.7, delay: 0.35 }}
           className="flex flex-wrap items-center justify-center gap-3 mb-10 max-w-3xl text-xs md:text-sm"
         >
-          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-dark/80 border border-gray-800 text-gray-300 backdrop-blur-md">
-            <Film className="w-4 h-4 text-brand-gold" />
+          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-dark/80 border border-blue-500/20 text-gray-200 backdrop-blur-md">
+            <Film className="w-4 h-4 text-blue-400" />
             <span>4K Laser Screen</span>
           </div>
-          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-dark/80 border border-gray-800 text-gray-300 backdrop-blur-md">
-            <Volume2 className="w-4 h-4 text-brand-gold" />
+          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-dark/80 border border-blue-500/20 text-gray-200 backdrop-blur-md">
+            <Volume2 className="w-4 h-4 text-blue-400" />
             <span>Dolby Atmos Audio</span>
           </div>
-          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-dark/80 border border-gray-800 text-gray-300 backdrop-blur-md">
-            <Heart className="w-4 h-4 text-brand-rose" />
+          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-dark/80 border border-blue-500/20 text-gray-200 backdrop-blur-md">
+            <Heart className="w-4 h-4 text-sky-400" />
             <span>Custom Decor & Cake</span>
           </div>
-          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-dark/80 border border-gray-800 text-gray-300 backdrop-blur-md">
-            <ShieldCheck className="w-4 h-4 text-green-400" />
+          <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-brand-dark/80 border border-blue-500/20 text-gray-200 backdrop-blur-md">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>100% Private & Sanitized</span>
           </div>
         </motion.div>
@@ -89,7 +89,7 @@ export const Hero = () => {
             <Button 
               variant="primary" 
               size="lg" 
-              className="w-full sm:w-auto px-8 py-4 text-base font-bold shadow-[0_0_30px_rgba(212,175,55,0.35)] hover:shadow-[0_0_40px_rgba(212,175,55,0.5)] transition-all transform hover:-translate-y-0.5"
+              className="w-full sm:w-auto px-8 py-4 text-base font-bold shadow-[0_0_30px_rgba(37,99,235,0.35)] hover:shadow-[0_0_40px_rgba(37,99,235,0.5)] transition-all transform hover:-translate-y-0.5"
             >
               Book Your Experience
             </Button>
@@ -98,7 +98,7 @@ export const Hero = () => {
             <Button 
               variant="secondary" 
               size="lg" 
-              className="w-full sm:w-auto px-8 py-4 text-base font-semibold border-gray-700 hover:border-brand-gold/60 text-white hover:text-brand-gold transition-all"
+              className="w-full sm:w-auto px-8 py-4 text-base font-semibold border-blue-500/30 hover:border-blue-400 text-white hover:text-blue-400 transition-all"
             >
               Explore Packages & Pricing
             </Button>
@@ -112,9 +112,9 @@ export const Hero = () => {
           transition={{ delay: 0.7, duration: 0.8 }}
           className="mt-10 flex items-center gap-2 text-xs md:text-sm text-gray-400"
         >
-          <div className="flex text-brand-gold">
+          <div className="flex text-amber-400">
             {[...Array(5)].map((_, i) => (
-              <Star key={i} className="w-4 h-4 fill-brand-gold" />
+              <Star key={i} className="w-4 h-4 fill-amber-400" />
             ))}
           </div>
           <span className="font-semibold text-white">4.9 / 5.0</span>

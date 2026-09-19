@@ -34,13 +34,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const isBusy = isLoading || loading;
     const baseStyles =
-      'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-gold disabled:pointer-events-none disabled:opacity-50 cursor-pointer';
+      'inline-flex items-center justify-center rounded-lg font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-50 cursor-pointer';
 
     const variants = {
-      primary: 'bg-brand-gold text-brand-dark hover:bg-yellow-400 shadow-md shadow-brand-gold/10 font-bold',
-      secondary: 'border border-brand-gold text-brand-gold hover:bg-brand-gold/10',
+      primary: 'bg-gradient-to-r from-blue-600 via-blue-500 to-sky-500 text-white hover:from-blue-500 hover:to-sky-400 shadow-md shadow-blue-500/25 border border-blue-400/30 font-bold',
+      secondary: 'border border-blue-500/50 text-blue-400 hover:bg-blue-500/10 hover:border-blue-400',
       danger: 'bg-red-500/20 text-red-400 border border-red-500/40 hover:bg-red-500/30',
-      ghost: 'hover:bg-brand-gold/10 text-brand-gold',
+      ghost: 'hover:bg-blue-500/10 text-blue-400',
     };
 
     const sizes = {

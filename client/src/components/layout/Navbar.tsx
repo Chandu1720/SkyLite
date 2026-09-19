@@ -36,8 +36,9 @@ export const Navbar = () => {
         isScrolled ? "bg-brand-darker/90 backdrop-blur-md border-b border-gray-800 shadow-lg py-3" : "bg-transparent py-5"
       )}>
         <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="font-heading text-2xl font-bold tracking-wider text-brand-gold">
+          <Link to="/" className="flex items-center gap-2.5">
+            <img src="/logo.png" alt="SkyLite Logo" className="w-9 h-9 object-contain rounded-full shadow-md shadow-blue-500/20 border border-blue-400/20" />
+            <span className="font-heading text-2xl font-bold tracking-wider text-blue-500">
               SKY<span className="text-white">LITE</span>
             </span>
           </Link>
@@ -48,8 +49,8 @@ export const Navbar = () => {
                 key={link.path} 
                 to={link.path}
                 className={cn(
-                  "text-sm font-medium transition-colors hover:text-brand-gold font-body",
-                  location.pathname === link.path ? "text-brand-gold" : "text-gray-300"
+                  "text-sm font-medium transition-colors hover:text-blue-400 font-body",
+                  location.pathname === link.path ? "text-blue-500 font-semibold" : "text-gray-300"
                 )}
               >
                 {link.name}
