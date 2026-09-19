@@ -18,7 +18,9 @@
   }
 }
 
-/* Light Theme Overrides (Crisp White & Royal Sapphire Luxury Palette) */
+/* ==========================================================================
+   LIGHT MODE DESIGN SYSTEM - Luxury Royal Blue & Crisp Pearl Palette
+   ========================================================================== */
 html.light {
   color-scheme: light;
 }
@@ -28,30 +30,27 @@ html.light body {
   color: #0F172A !important;
 }
 
+/* Background Surfaces */
 html.light .bg-brand-darker {
   background-color: #F8FAFC !important;
 }
 
 html.light .bg-brand-dark {
   background-color: #FFFFFF !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(226, 232, 240, 0.8) !important;
 }
 
+html.light .bg-brand-dark\/90,
+html.light .bg-brand-dark\/80,
 html.light .bg-brand-dark\/60 {
   background-color: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 0 0 1px rgba(226, 232, 240, 0.7) !important;
 }
 
-html.light .bg-brand-darker\/80 {
-  background-color: rgba(241, 245, 249, 0.95) !important;
-}
-
+html.light .bg-brand-darker\/90,
+html.light .bg-brand-darker\/80,
 html.light .bg-brand-darker\/50 {
-  background-color: rgba(241, 245, 249, 0.7) !important;
-}
-
-html.light .border-gray-800,
-html.light .border-gray-900,
-html.light .border-gray-700 {
-  border-color: #E2E8F0 !important;
+  background-color: rgba(248, 250, 252, 0.95) !important;
 }
 
 html.light .bg-gray-800,
@@ -60,27 +59,160 @@ html.light .bg-gray-950 {
   background-color: #F1F5F9 !important;
 }
 
-html.light .text-white {
+/* Inner pill wells inside cards */
+html.light .bg-brand-dark .bg-brand-darker,
+html.light .rounded-3xl .bg-brand-darker,
+html.light .rounded-2xl .bg-brand-darker,
+html.light .rounded-xl .bg-brand-darker {
+  background-color: #F1F5F9 !important;
+  border-color: #E2E8F0 !important;
+}
+
+/* Borders */
+html.light .border-gray-800,
+html.light .border-gray-900,
+html.light .border-gray-700,
+html.light .border-gray-800\/80,
+html.light .border-gray-800\/50,
+html.light .border-gray-800\/90 {
+  border-color: #E2E8F0 !important;
+}
+
+html.light .border-white\/10,
+html.light .border-white\/15,
+html.light .border-white\/20 {
+  border-color: #E2E8F0 !important;
+}
+
+/* Glass Panels */
+html.light .glass-panel {
+  background: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(16px) !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 10px 30px -5px rgba(37, 99, 235, 0.08), 0 2px 10px -2px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Typography Hierarchy in Light Mode */
+html.light h1,
+html.light h2,
+html.light h3,
+html.light h4,
+html.light h5,
+html.light h6 {
+  color: #0F172A;
+}
+
+/* Keep white text on buttons, badges, gradients, and alerts */
+html.light .text-white:not(button):not(button *):not([class*="bg-blue"]):not([class*="bg-gradient"]):not([class*="bg-red"]):not([class*="bg-emerald"]):not([class*="bg-amber"]):not(footer *):not(.badge-text) {
   color: #0F172A !important;
 }
 
 html.light .text-gray-100,
 html.light .text-gray-200,
 html.light .text-gray-300 {
-  color: #1E293B !important;
+  color: #334155 !important; /* Slate 700 */
 }
 
 html.light .text-gray-400,
 html.light .text-gray-500 {
-  color: #64748B !important;
+  color: #64748B !important; /* Slate 500 */
 }
 
+/* Radiant Gold / Blue text mapping in Light Mode */
+html.light .text-brand-gold {
+  color: #2563EB !important; /* Royal Sapphire Blue */
+}
+
+html.light .fill-brand-gold {
+  fill: #F59E0B !important; /* Star ratings stay warm gold */
+}
+
+html.light .fill-amber-400 {
+  fill: #F59E0B !important;
+}
+
+/* Hero Section In Light Mode */
+html.light .hero-container {
+  background-color: #F8FAFC !important;
+}
+
+html.light .hero-bg-overlay {
+  background: linear-gradient(180deg, rgba(248, 250, 252, 0.88) 0%, rgba(241, 245, 249, 0.96) 100%) !important;
+}
+
+html.light .hero-headline {
+  color: #0F172A !important;
+}
+
+html.light .hero-headline-gradient {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 40%, #0284C7 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Buttons and Links */
+html.light button[class*="from-blue-600"],
+html.light button.bg-brand-gold,
+html.light a[class*="from-blue-600"] {
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 50%, #0284C7 100%) !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 20px -2px rgba(37, 99, 235, 0.35) !important;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+html.light button[class*="from-blue-600"] *,
+html.light a[class*="from-blue-600"] * {
+  color: #FFFFFF !important;
+}
+
+html.light button[class*="border-blue-500"],
+html.light a[class*="border-blue-500"],
+html.light button[class*="border-brand-gold"],
+html.light a[class*="border-brand-gold"] {
+  background-color: #FFFFFF !important;
+  border-color: #2563EB !important;
+  color: #2563EB !important;
+}
+
+html.light button[class*="border-blue-500"]:hover,
+html.light a[class*="border-blue-500"]:hover,
+html.light button[class*="border-brand-gold"]:hover,
+html.light a[class*="border-brand-gold"]:hover {
+  background-color: #EFF6FF !important;
+}
+
+/* Navbar in Light Mode */
+html.light nav {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid #E2E8F0 !important;
+  box-shadow: 0 4px 20px -4px rgba(15, 23, 42, 0.05) !important;
+}
+
+html.light nav a {
+  color: #334155;
+}
+
+html.light nav a:hover {
+  color: #2563EB !important;
+}
+
+/* Form Controls in Light Mode */
 html.light input,
 html.light select,
 html.light textarea {
   background-color: #FFFFFF !important;
   color: #0F172A !important;
-  border-color: #CBD5E1 !important;
+  border: 1px solid #CBD5E1 !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+html.light input:focus,
+html.light select:focus,
+html.light textarea:focus {
+  border-color: #2563EB !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15) !important;
 }
 
 html.light input::placeholder,
@@ -88,10 +220,75 @@ html.light textarea::placeholder {
   color: #94A3B8 !important;
 }
 
-html.light .glass-panel {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  border-color: rgba(37, 99, 235, 0.2) !important;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+/* Mobile Nav Drawer in Light Mode */
+html.light .mobile-drawer,
+html.light .md\:hidden.fixed.right-0 {
+  background-color: #FFFFFF !important;
+  border-left-color: #E2E8F0 !important;
+}
+
+html.light .mobile-drawer a,
+html.light .md\:hidden.fixed.right-0 a {
+  color: #334155 !important;
+}
+
+html.light .mobile-drawer a:hover,
+html.light .md\:hidden.fixed.right-0 a:hover {
+  color: #2563EB !important;
+}
+
+/* Card Hover Lighting */
+html.light .group:hover .bg-brand-dark {
+  border-color: #93C5FD !important;
+  box-shadow: 0 12px 30px -5px rgba(37, 99, 235, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.04) !important;
+}
+
+/* Footer in Light Mode - Luxury Midnight Anchor */
+html.light footer {
+  background-color: #0B132B !important;
+  border-top-color: #1E293B !important;
+  color: #E2E8F0 !important;
+}
+
+html.light footer .text-white {
+  color: #FFFFFF !important;
+}
+
+html.light footer .text-gray-400 {
+  color: #94A3B8 !important;
+}
+
+html.light footer a {
+  color: #94A3B8 !important;
+}
+
+html.light footer a:hover {
+  color: #60A5FA !important;
+}
+
+/* Theme Toggle Button in Light Mode */
+html.light .theme-toggle,
+html.light button[title*="Theme"] {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  color: #2563EB !important;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Admin Dashboard in Light Mode */
+html.light .lg\:w-64.bg-brand-dark {
+  background-color: #FFFFFF !important;
+  border-right-color: #E2E8F0 !important;
+}
+
+html.light header.sticky {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-bottom-color: #E2E8F0 !important;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light main.bg-brand-darker {
+  background-color: #F8FAFC !important;
 }
 
 /* Custom Scrollbar in Blue & White */
