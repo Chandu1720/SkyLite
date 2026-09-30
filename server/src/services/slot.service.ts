@@ -6,19 +6,47 @@ export const slotService = {
   /**
    * Get all slots for a theatre on a specific date (public - shows all statuses for display)
    */
-  async getAvailableSlots(theatreId: string, dateStr: string) {
+  async getAvailableSlots(theatreId: string, dateStr: string, noticeMinutes: number = 60) {
     const date = new Date(dateStr);
     date.setUTCHours(0, 0, 0, 0);
     const nextDay = new Date(date);
     nextDay.setDate(nextDay.getDate() + 1);
 
-    return await prisma.slot.findMany({
+    const slots = await prisma.slot.findMany({
       where: {
         theatreId,
         date: { gte: date, lt: nextDay },
       },
       orderBy: { startTime: 'asc' },
     });
+
+    // Check if queried date is today in Indian Standard Time (UTC+5:30) or local
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000;
+    const nowIST = new Date(now.getTime() + istOffset);
+    const queryDateIST = new Date(date.getTime() + istOffset);
+
+    const isToday =
+      nowIST.toISOString().slice(0, 10) === queryDateIST.toISOString().slice(0, 10) ||
+      now.toISOString().slice(0, 10) === dateStr.slice(0, 10);
+
+    if (isToday) {
+      const currentHours = nowIST.getUTCHours();
+      const currentMinutes = nowIST.getUTCMinutes();
+      const cutoffTimeMinutes = currentHours * 60 + currentMinutes + noticeMinutes;
+
+      return slots.map((slot) => {
+        const [h, m] = slot.startTime.split(':').map(Number);
+        const slotTimeMinutes = (h || 0) * 60 + (m || 0);
+
+        if (slotTimeMinutes < cutoffTimeMinutes && slot.status === SlotStatus.AVAILABLE) {
+          return { ...slot, status: SlotStatus.EXPIRED };
+        }
+        return slot;
+      });
+    }
+
+    return slots;
   },
 
   /**

@@ -51,6 +51,10 @@ router.get('/bookings/:id', adminCtrl.getBooking);
 router.post('/bookings', adminCtrl.adminCreateBooking);
 router.post('/bookings/walkin', adminCtrl.adminWalkInBooking);
 router.post('/bookings/:id/collect-balance', adminCtrl.collectBalance);
+router.post('/bookings/:id/checkin', adminCtrl.checkInBooking);
+router.post('/bookings/:id/checkout', adminCtrl.checkOutBooking);
+router.post('/bookings/:id/noshow', adminCtrl.markNoShow);
+router.post('/bookings/:id/send-review', adminCtrl.sendReviewRequest);
 router.post('/bookings/:id/cancel', adminCtrl.cancelBooking);
 router.post('/bookings/:id/reschedule', adminCtrl.rescheduleBooking);
 
@@ -77,6 +81,7 @@ router.get('/audit-logs', adminCtrl.getAuditLogs);
 router.get('/reviews', adminCtrl.getReviews);
 router.post('/reviews', adminCtrl.createReview);
 router.put('/reviews/:id', adminCtrl.updateReview);
+router.post('/reviews/sync-google', adminCtrl.syncGoogleReviews);
 
 // Coupons
 router.get('/coupons', adminCtrl.getCoupons);

@@ -15,6 +15,7 @@ interface BookingState {
   selectedDate: string | null; // YYYY-MM-DD
   selectedSlot: string | null;
   selectedPackage: string | null;
+  selectedDuration: number;
   selectedAddons: string[];
   customerDetails: CustomerDetails | null;
   paymentType: 'FULL' | 'ADVANCE';
@@ -30,6 +31,7 @@ interface BookingContextType extends BookingState {
   selectDate: (date: string) => void;
   selectSlot: (id: string) => void;
   selectPackage: (id: string) => void;
+  selectDuration: (minutes: number) => void;
   toggleAddon: (id: string) => void;
   setCustomerDetails: (details: CustomerDetails) => void;
   setPaymentType: (type: 'FULL' | 'ADVANCE') => void;
@@ -49,6 +51,7 @@ const initialState: BookingState = {
   selectedDate: null,
   selectedSlot: null,
   selectedPackage: null,
+  selectedDuration: 120,
   selectedAddons: [],
   customerDetails: null,
   paymentType: 'ADVANCE',
@@ -96,6 +99,7 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
   const selectDate = (date: string) => setState(s => ({ ...s, selectedDate: date, selectedSlot: null })); // Reset slot when date changes
   const selectSlot = (id: string) => setState(s => ({ ...s, selectedSlot: id }));
   const selectPackage = (id: string) => setState(s => ({ ...s, selectedPackage: id }));
+  const selectDuration = (minutes: number) => setState(s => ({ ...s, selectedDuration: minutes }));
   
   const toggleAddon = (id: string) => setState(s => {
     const currentAddons = s.selectedAddons || [];
@@ -156,6 +160,7 @@ export const BookingProvider: React.FC<{ children: ReactNode }> = ({ children })
       selectDate,
       selectSlot,
       selectPackage,
+      selectDuration,
       toggleAddon,
       setCustomerDetails,
       setPaymentType,

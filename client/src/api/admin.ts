@@ -63,6 +63,22 @@ export const adminApi = {
     const { data } = await api.post<ApiResponse<BookingDTO>>(`/admin/bookings/${id}/collect-balance`, payload);
     return data.data!;
   },
+  checkInBooking: async (id: string): Promise<BookingDTO> => {
+    const { data } = await api.post<ApiResponse<BookingDTO>>(`/admin/bookings/${id}/checkin`);
+    return data.data!;
+  },
+  checkOutBooking: async (id: string): Promise<{ data: BookingDTO; whatsappReviewUrl: string }> => {
+    const { data } = await api.post<ApiResponse<BookingDTO> & { whatsappReviewUrl: string }>(`/admin/bookings/${id}/checkout`);
+    return { data: data.data!, whatsappReviewUrl: data.whatsappReviewUrl };
+  },
+  markNoShow: async (id: string): Promise<BookingDTO> => {
+    const { data } = await api.post<ApiResponse<BookingDTO>>(`/admin/bookings/${id}/noshow`);
+    return data.data!;
+  },
+  sendReviewRequest: async (id: string): Promise<{ whatsappReviewUrl: string }> => {
+    const { data } = await api.post<ApiResponse<any> & { whatsappReviewUrl: string }>(`/admin/bookings/${id}/send-review`);
+    return { whatsappReviewUrl: data.whatsappReviewUrl };
+  },
   cancelBooking: async (id: string, reason?: string): Promise<BookingDTO> => {
     const { data } = await api.post<ApiResponse<BookingDTO>>(`/admin/bookings/${id}/cancel`, { reason });
     return data.data!;
@@ -223,6 +239,10 @@ export const adminApi = {
   },
   updateReview: async (id: string, review: Partial<ReviewDTO>): Promise<ReviewDTO> => {
     const { data } = await api.put<ApiResponse<ReviewDTO>>(`/admin/reviews/${id}`, review);
+    return data.data!;
+  },
+  syncGoogleReviews: async (placeId?: string, apiKey?: string): Promise<{ count: number; source: string }> => {
+    const { data } = await api.post<ApiResponse<{ count: number; source: string }>>('/admin/reviews/sync-google', { placeId, apiKey });
     return data.data!;
   },
 

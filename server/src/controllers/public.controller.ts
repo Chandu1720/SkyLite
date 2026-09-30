@@ -5,6 +5,7 @@ import { packageService } from '../services/package.service';
 import { addonService } from '../services/addon.service';
 import { slotService } from '../services/slot.service';
 import { settingsService } from '../services/settings.service';
+import { googleReviewsService } from '../services/google-reviews.service';
 import prisma from '../config/database';
 
 export const getTheatres = async (req: Request, res: Response, next: NextFunction) => {
@@ -77,17 +78,29 @@ export const getSlots = async (req: Request, res: Response, next: NextFunction) 
     if (!theatre || !date) {
       return res.status(400).json({ success: false, error: 'theatre and date query params are required' });
     }
-    const slots = await slotService.getAvailableSlots(theatre as string, date as string);
+    const settings = await settingsService.getPublicSettings();
+    const noticeMinutes = settings.sameDayNoticeMinutes || 60;
+    const slots = await slotService.getAvailableSlots(theatre as string, date as string, noticeMinutes);
     res.json({ success: true, data: slots });
   } catch (error) { next(error); }
 };
 
 export const getReviews = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const reviews = await prisma.review.findMany({
+    let reviews = await prisma.review.findMany({
       where: { isActive: true },
       orderBy: { displayOrder: 'asc' },
     });
+
+    // If no reviews exist yet, seed the authentic verified Google reviews
+    if (reviews.length === 0) {
+      await googleReviewsService.syncGoogleReviews();
+      reviews = await prisma.review.findMany({
+        where: { isActive: true },
+        orderBy: { displayOrder: 'asc' },
+      });
+    }
+
     res.json({ success: true, data: reviews });
   } catch (error) { next(error); }
 };

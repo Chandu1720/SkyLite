@@ -11,6 +11,8 @@ import { customerService } from '../services/customer.service';
 import { settingsService } from '../services/settings.service';
 import { auditService } from '../services/audit.service';
 import { couponService } from '../services/coupon.service';
+import { googleReviewsService } from '../services/google-reviews.service';
+import { whatsappService } from '../services/whatsapp.service';
 import prisma from '../config/database';
 import { AuthRequest } from '../middleware/auth';
 
@@ -249,6 +251,111 @@ export const rescheduleBooking = async (req: AuthRequest, res: Response, next: N
   } catch (error) { next(error); }
 };
 
+export const checkInBooking = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string;
+    const booking = await prisma.booking.findUnique({
+      where: { id },
+      include: { customer: true, theatre: true }
+    });
+    if (!booking) return res.status(404).json({ success: false, error: 'Booking not found' });
+
+    const updated = await prisma.booking.update({
+      where: { id },
+      data: {
+        bookingStatus: 'CHECKED_IN',
+        checkedInAt: new Date(),
+      },
+      include: { customer: true, theatre: true, occasion: true, package: true, slot: true, bookingAddons: true, payments: true }
+    });
+    await auditService.log(req.admin.id, 'UPDATE', 'Booking', id, 'CHECKED_IN');
+    res.json({ success: true, data: updated, message: 'Customer checked in successfully' });
+  } catch (error) { next(error); }
+};
+
+export const checkOutBooking = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string;
+    const booking = await prisma.booking.findUnique({
+      where: { id },
+      include: { customer: true, theatre: true }
+    });
+    if (!booking) return res.status(404).json({ success: false, error: 'Booking not found' });
+
+    // Fetch google review url from settings
+    const settings = await settingsService.getPublicSettings();
+    const reviewUrl = settings.googleReviewUrl || 'https://maps.google.com';
+
+    const updated = await prisma.booking.update({
+      where: { id },
+      data: {
+        bookingStatus: 'COMPLETED',
+        checkedOutAt: new Date(),
+        reviewSent: true,
+        reviewSentAt: new Date(),
+      },
+      include: { customer: true, theatre: true, occasion: true, package: true, slot: true, bookingAddons: true, payments: true }
+    });
+
+    // Generate WhatsApp review URL
+    const whatsappReviewUrl = whatsappService.generateReviewWhatsAppUrl(
+      booking.customer.phone,
+      booking.customer.name,
+      booking.theatre.name,
+      reviewUrl
+    );
+
+    await auditService.log(req.admin.id, 'UPDATE', 'Booking', id, 'COMPLETED');
+    res.json({
+      success: true,
+      data: updated,
+      whatsappReviewUrl,
+      message: 'Booking completed successfully and review request generated'
+    });
+  } catch (error) { next(error); }
+};
+
+export const markNoShow = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string;
+    const updated = await prisma.booking.update({
+      where: { id },
+      data: { bookingStatus: 'NO_SHOW' },
+      include: { customer: true, theatre: true, occasion: true, package: true, slot: true, bookingAddons: true, payments: true }
+    });
+    await auditService.log(req.admin.id, 'UPDATE', 'Booking', id, 'NO_SHOW');
+    res.json({ success: true, data: updated, message: 'Booking marked as No-Show' });
+  } catch (error) { next(error); }
+};
+
+export const sendReviewRequest = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const id = req.params.id as string;
+    const booking = await prisma.booking.findUnique({
+      where: { id },
+      include: { customer: true, theatre: true }
+    });
+    if (!booking) return res.status(404).json({ success: false, error: 'Booking not found' });
+
+    const settings = await settingsService.getPublicSettings();
+    const reviewUrl = settings.googleReviewUrl || 'https://maps.google.com';
+
+    await prisma.booking.update({
+      where: { id },
+      data: { reviewSent: true, reviewSentAt: new Date() }
+    });
+
+    const whatsappReviewUrl = whatsappService.generateReviewWhatsAppUrl(
+      booking.customer.phone,
+      booking.customer.name,
+      booking.theatre.name,
+      reviewUrl
+    );
+
+    res.json({ success: true, whatsappReviewUrl, message: 'Review request link generated' });
+  } catch (error) { next(error); }
+};
+
 // PAYMENTS
 export const getPendingPayments = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -342,6 +449,17 @@ export const updateReview = async (req: AuthRequest, res: Response, next: NextFu
     const review = await prisma.review.update({ where: { id: req.params.id as string }, data: req.body });
     await auditService.log(req.admin.id, 'UPDATE', 'Review', review.id);
     res.json({ success: true, data: review });
+  } catch (error) { next(error); }
+};
+
+export const syncGoogleReviews = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const settings = await settingsService.getPublicSettings();
+    const placeId = (req.body.placeId || settings.googlePlaceId) as string;
+    const apiKey = (req.body.apiKey) as string;
+    const result = await googleReviewsService.syncGoogleReviews(placeId, apiKey);
+    await auditService.log(req.admin.id, 'SYNC', 'GoogleReviews', placeId || 'curated');
+    res.json({ success: true, data: result, message: `Synced ${result.count} Google reviews successfully` });
   } catch (error) { next(error); }
 };
 

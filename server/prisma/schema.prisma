@@ -177,6 +177,11 @@ model Booking {
   bookingSource    String         @default("ONLINE")
   bookingStatus    String         @default("DRAFT")
   paymentStatus    String         @default("PENDING")
+  durationMinutes  Int            @default(120)
+  checkedInAt      DateTime?
+  checkedOutAt     DateTime?
+  reviewSent       Boolean        @default(false)
+  reviewSentAt     DateTime?
   holdExpiresAt    DateTime?
   createdBy        String?
   createdAt        DateTime       @default(now())
@@ -249,13 +254,17 @@ model AuditLog {
 }
 
 model Review {
-  id           String   @id @default(uuid())
-  customerName String
-  rating       Int
-  comment      String
-  isActive     Boolean  @default(true)
-  displayOrder Int      @default(0)
-  createdAt    DateTime @default(now())
+  id             String   @id @default(uuid())
+  customerName   String
+  rating         Int
+  comment        String
+  source         String   @default("GOOGLE")
+  avatarUrl      String?
+  relativeTime   String?
+  googleReviewId String?  @unique
+  isActive       Boolean  @default(true)
+  displayOrder   Int      @default(0)
+  createdAt      DateTime @default(now())
 }
 
 model Coupon {

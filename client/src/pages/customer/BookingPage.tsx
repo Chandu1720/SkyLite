@@ -51,6 +51,7 @@ export const BookingPage: React.FC = () => {
     selectedDate,
     selectedSlot,
     selectedPackage,
+    selectedDuration,
     selectedAddons,
     customerDetails,
     paymentType,
@@ -61,6 +62,7 @@ export const BookingPage: React.FC = () => {
     selectDate,
     selectSlot,
     selectPackage,
+    selectDuration,
     toggleAddon,
     setCustomerDetails,
     setPaymentType,
@@ -280,11 +282,14 @@ export const BookingPage: React.FC = () => {
   }
   const computedRemaining = Math.max(0, finalTotal - computedAdvance);
 
-  // Date list for next 30 days
+  // Date list for next 30 days starting from TODAY
+  const todayDateObj = new Date();
+  const todayStr = `${todayDateObj.getFullYear()}-${String(todayDateObj.getMonth() + 1).padStart(2, '0')}-${String(todayDateObj.getDate()).padStart(2, '0')}`;
+
   const availableDates = Array.from({ length: 30 }).map((_, i) => {
     const d = new Date();
-    d.setDate(d.getDate() + i + 1); // Start from tomorrow
-    return d.toISOString().split('T')[0];
+    d.setDate(d.getDate() + i); // Start from TODAY (i = 0)
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   });
 
   const handleDetailsSubmit = async (e: React.FormEvent) => {
@@ -345,6 +350,7 @@ export const BookingPage: React.FC = () => {
         theatreId: selectedTheatre,
         slotId: selectedSlot,
         packageId: selectedPackage,
+        durationMinutes: selectedDuration || currentPackageObj?.durationMinutes || 120,
         addonIds: selectedAddons || [],
         customerName: name.trim(),
         customerPhone: cleanPhone,
@@ -540,15 +546,17 @@ export const BookingPage: React.FC = () => {
                   <Calendar className="w-6 h-6 text-brand-gold" />
                   <div>
                     <h2 className="text-xl md:text-2xl font-heading text-white">Select Celebration Date</h2>
-                    <p className="text-xs md:text-sm text-gray-400">Pick a date within the next 30 days</p>
+                    <p className="text-xs md:text-sm text-gray-400">Pick a date within the next 30 days — Same-day booking available!</p>
                   </div>
                 </div>
 
                 {/* Horizontal scrollable date pills on mobile, grid on desktop */}
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-7 gap-3">
                   {availableDates.map((dateStr) => {
+                    const isToday = dateStr === todayStr;
                     const isSelected = selectedDate === dateStr;
-                    const dateObj = new Date(dateStr);
+                    const [y, m, d] = dateStr.split('-').map(Number);
+                    const dateObj = new Date(y, m - 1, d);
                     const dayName = dateObj.toLocaleDateString('en-IN', { weekday: 'short' });
                     const monthName = dateObj.toLocaleDateString('en-IN', { month: 'short' });
                     const dayNum = dateObj.getDate();
@@ -560,12 +568,23 @@ export const BookingPage: React.FC = () => {
                           selectDate(dateStr);
                           goNext();
                         }}
-                        className={`p-3.5 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1 ${
+                        className={`p-3.5 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1 relative ${
                           isSelected
                             ? 'border-brand-gold bg-brand-gold text-brand-dark font-bold shadow-lg shadow-brand-gold/20'
+                            : isToday
+                            ? 'border-amber-500/80 bg-amber-500/10 hover:border-amber-400 text-white'
                             : 'border-gray-800 bg-brand-darker hover:border-brand-gold/50 text-gray-300'
                         }`}
                       >
+                        {isToday && (
+                          <span
+                            className={`text-[9px] uppercase tracking-wider font-extrabold px-1.5 py-0.5 rounded-full ${
+                              isSelected ? 'bg-brand-dark text-brand-gold' : 'bg-amber-400 text-black animate-pulse'
+                            }`}
+                          >
+                            TODAY
+                          </span>
+                        )}
                         <span className="text-xs uppercase tracking-wider opacity-80">{dayName}</span>
                         <span className="text-2xl font-heading leading-none">{dayNum}</span>
                         <span className="text-xs uppercase">{monthName}</span>
@@ -599,6 +618,15 @@ export const BookingPage: React.FC = () => {
                     Change Date
                   </Button>
                 </div>
+
+                {selectedDate === todayStr && (
+                  <div className="bg-amber-500/10 border border-amber-500/30 rounded-xl p-3 flex items-center gap-2.5 text-xs text-amber-300">
+                    <Sparkles className="w-4 h-4 flex-shrink-0 text-amber-400" />
+                    <span>
+                      Booking for <strong>TODAY</strong>: Showing slots available with preparation buffer ({settings?.sameDayNoticeMinutes || 60} mins minimum notice).
+                    </span>
+                  </div>
+                )}
 
                 {loading ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
@@ -680,8 +708,59 @@ export const BookingPage: React.FC = () => {
                 <div className="flex items-center gap-3 border-b border-gray-800 pb-4">
                   <Gift className="w-6 h-6 text-brand-gold" />
                   <div>
-                    <h2 className="text-xl md:text-2xl font-heading text-white">Select Experience Package</h2>
-                    <p className="text-xs md:text-sm text-gray-400">Choose the package tailored for {currentOccasionObj?.name}</p>
+                    <h2 className="text-xl md:text-2xl font-heading text-white">Select Experience Package & Duration</h2>
+                    <p className="text-xs md:text-sm text-gray-400">Choose your celebration duration and experience package tailored for {currentOccasionObj?.name}</p>
+                  </div>
+                </div>
+
+                {/* Duration Selector */}
+                <div className="bg-brand-dark/60 border border-gray-800 rounded-2xl p-4 sm:p-5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-3">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-brand-gold" />
+                      <h3 className="text-sm font-semibold text-white uppercase tracking-wider">Celebration Duration</h3>
+                    </div>
+                    <span className="text-xs text-brand-gold font-medium">Standard slot: 2 Hours</span>
+                  </div>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                    {[
+                      { duration: 60, title: '1 Hour', subtitle: 'Express Celebration', popular: false },
+                      { duration: 120, title: '2 Hours', subtitle: 'Most Popular Choice', popular: true },
+                      { duration: 180, title: '3 Hours', subtitle: 'Full Movie & Party', popular: false },
+                      { duration: 240, title: '4 Hours', subtitle: 'VIP Grand Celebration', popular: false },
+                    ].map((d) => {
+                      const isDurSelected = (selectedDuration || 120) === d.duration;
+                      return (
+                        <div
+                          key={d.duration}
+                          onClick={() => selectDuration(d.duration)}
+                          className={`relative p-3.5 rounded-xl border-2 text-left transition-all cursor-pointer flex flex-col justify-between ${
+                            isDurSelected
+                              ? 'border-brand-gold bg-brand-gold/15 shadow-md shadow-brand-gold/10'
+                              : 'border-gray-800 bg-brand-darker hover:border-gray-700'
+                          }`}
+                        >
+                          {d.popular && (
+                            <div className="absolute -top-2.5 right-2 bg-gradient-to-r from-amber-500 to-yellow-400 text-black text-[10px] font-black px-2 py-0.5 rounded-full shadow flex items-center gap-1 uppercase tracking-wide">
+                              ⭐ Most Popular
+                            </div>
+                          )}
+                          <div>
+                            <div className={`text-base font-bold font-heading ${isDurSelected ? 'text-brand-gold' : 'text-white'}`}>
+                              {d.title}
+                            </div>
+                            <div className="text-[11px] text-gray-400 mt-0.5">{d.subtitle}</div>
+                          </div>
+                          <div className="mt-3 flex items-center justify-between text-xs">
+                            <span className={`text-[11px] font-medium ${isDurSelected ? 'text-brand-gold font-semibold' : 'text-gray-500'}`}>
+                              {isDurSelected ? 'Selected' : 'Select'}
+                            </span>
+                            {isDurSelected && <Check className="w-4 h-4 text-brand-gold" />}
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -1050,6 +1129,12 @@ export const BookingPage: React.FC = () => {
                       <div className="flex justify-between">
                         <span className="text-gray-400">Package</span>
                         <span className="text-white font-medium">{currentPackageObj?.name || '—'}</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-gray-400">Duration</span>
+                        <span className="text-brand-gold font-medium">
+                          {selectedDuration ? `${Math.floor(selectedDuration / 60)} Hour${selectedDuration > 60 ? 's' : ''} (${selectedDuration} Mins)` : '2 Hours (120 Mins)'}
+                        </span>
                       </div>
 
                       {selectedAddonObjs.length > 0 && (

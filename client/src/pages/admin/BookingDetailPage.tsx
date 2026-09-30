@@ -92,6 +92,68 @@ export const BookingDetailPage: React.FC = () => {
     }
   };
 
+  const handleCheckIn = async () => {
+    if (!id) return;
+    try {
+      setProcessing(true);
+      await adminApi.checkInBooking(id);
+      toast('success', 'Customer checked in! Live session timer started.');
+      fetchBooking();
+    } catch (err: any) {
+      toast('error', err.response?.data?.error || 'Failed to check in');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleCheckOut = async () => {
+    if (!id) return;
+    try {
+      setProcessing(true);
+      const res = await adminApi.checkOutBooking(id);
+      toast('success', 'Session completed! Opening review invitation...');
+      fetchBooking();
+      if (res.whatsappReviewUrl) {
+        window.open(res.whatsappReviewUrl, '_blank');
+      }
+    } catch (err: any) {
+      toast('error', err.response?.data?.error || 'Failed to check out');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleMarkNoShow = async () => {
+    if (!id || !window.confirm('Mark this booking as No-Show?')) return;
+    try {
+      setProcessing(true);
+      await adminApi.markNoShow(id);
+      toast('success', 'Booking marked as No-Show.');
+      fetchBooking();
+    } catch (err: any) {
+      toast('error', err.response?.data?.error || 'Failed to mark No-Show');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
+  const handleSendReviewRequest = async () => {
+    if (!id) return;
+    try {
+      setProcessing(true);
+      const res = await adminApi.sendReviewRequest(id);
+      toast('success', 'Opening WhatsApp with Google Review invitation...');
+      if (res.whatsappReviewUrl) {
+        window.open(res.whatsappReviewUrl, '_blank');
+      }
+      fetchBooking();
+    } catch (err: any) {
+      toast('error', err.response?.data?.error || 'Failed to send review link');
+    } finally {
+      setProcessing(false);
+    }
+  };
+
   const handleCollectBalance = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!id || !booking) return;
@@ -321,13 +383,90 @@ export const BookingDetailPage: React.FC = () => {
                   setCollectAmount(booking.remainingAmount);
                   setIsCollectModalOpen(true);
                 }}
-                className="w-full flex items-center justify-center gap-1.5 bg-brand-gold text-brand-dark font-bold hover:bg-brand-accent"
+                className="w-full flex items-center justify-center gap-1.5 bg-blue-600 text-white font-bold hover:bg-blue-500"
               >
-                <DollarSign className="w-4 h-4" /> Collect Remaining Balance ({formatCurrency(booking.remainingAmount)})
+                <DollarSign className="w-4 h-4" /> Collect Balance ({formatCurrency(booking.remainingAmount)})
               </Button>
             )}
 
-            {booking.bookingStatus !== 'CANCELLED' && (
+            {/* Smart Hybrid Check-In */}
+            {(booking.bookingStatus === 'CONFIRMED' || booking.bookingStatus === 'PAYMENT_PENDING') && (
+              <div className="space-y-2 pt-1 border-t border-gray-800">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  disabled={processing}
+                  onClick={handleCheckIn}
+                  className="w-full flex items-center justify-center gap-1.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold shadow-md shadow-blue-500/20"
+                >
+                  <CheckCircle className="w-4 h-4" /> Check-In Guest (Start Session)
+                </Button>
+                <button
+                  type="button"
+                  onClick={handleMarkNoShow}
+                  disabled={processing}
+                  className="w-full text-center text-xs text-red-400 hover:text-red-300 py-1 transition-colors cursor-pointer"
+                >
+                  Mark as No-Show
+                </button>
+              </div>
+            )}
+
+            {/* Active Live Session State */}
+            {booking.bookingStatus === 'CHECKED_IN' && (
+              <div className="p-3 bg-blue-500/10 border border-blue-500/30 rounded-xl space-y-2.5">
+                <div className="flex items-center gap-2 text-xs font-semibold text-blue-400">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping inline-block" />
+                  <span>Guest Checked In & Screening Active</span>
+                </div>
+                {booking.checkedInAt && (
+                  <p className="text-[11px] text-gray-400">
+                    Started at: {new Date(booking.checkedInAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                )}
+                <Button
+                  variant="primary"
+                  size="sm"
+                  disabled={processing}
+                  onClick={handleCheckOut}
+                  className="w-full flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-md shadow-emerald-500/20"
+                >
+                  <CheckCircle className="w-4 h-4" /> Complete Check-Out & Send Review Link
+                </Button>
+              </div>
+            )}
+
+            {/* Completed Session State & Review Link */}
+            {booking.bookingStatus === 'COMPLETED' && (
+              <div className="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl space-y-2">
+                <div className="flex items-center justify-between text-xs text-emerald-400 font-semibold">
+                  <span>Session Completed</span>
+                  {booking.checkedOutAt && (
+                    <span className="text-[10px] text-gray-400">
+                      {new Date(booking.checkedOutAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </span>
+                  )}
+                </div>
+
+                <Button
+                  variant="primary"
+                  size="sm"
+                  disabled={processing}
+                  onClick={handleSendReviewRequest}
+                  className="w-full flex items-center justify-center gap-1.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-white font-bold shadow-md"
+                >
+                  <Gift className="w-4 h-4" /> Send Review Link (WhatsApp)
+                </Button>
+
+                {booking.reviewSent && (
+                  <p className="text-[10px] text-center text-gray-400">
+                    Review request link already dispatched
+                  </p>
+                )}
+              </div>
+            )}
+
+            {booking.bookingStatus !== 'CANCELLED' && booking.bookingStatus !== 'COMPLETED' && (
               <Button
                 variant="danger"
                 size="sm"

@@ -137,6 +137,11 @@ export interface BookingDTO {
   discountCode?: string | null;
   bookingStatus: BookingStatus;
   paymentStatus: PaymentStatus;
+  durationMinutes?: number;
+  checkedInAt?: string | null;
+  checkedOutAt?: string | null;
+  reviewSent?: boolean;
+  reviewSentAt?: string | null;
   holdExpiresAt: string | null;
   createdBy: string | null;
   createdAt: string;
@@ -209,6 +214,12 @@ export interface PublicSettings {
   welcomePopupSubtitle?: string;
   welcomePopupCouponCode?: string;
   welcomePopupDiscountText?: string;
+  googleReviewUrl?: string;
+  googlePlaceId?: string;
+  googlePlacesApiKey?: string;
+  sameDayNoticeMinutes?: number;
+  averageRating?: number;
+  totalReviewsCount?: number;
 }
 
 // ---- Coupon ----
@@ -296,6 +307,10 @@ export interface ReviewDTO {
   customerName: string;
   rating: number;
   comment: string;
+  source?: 'GOOGLE' | 'LOCAL';
+  avatarUrl?: string | null;
+  relativeTime?: string | null;
+  googleReviewId?: string | null;
   isActive: boolean;
   displayOrder: number;
   createdAt: string;
@@ -307,6 +322,7 @@ export interface CreateBookingRequest {
   theatreId: string;
   slotId: string;
   packageId: string;
+  durationMinutes?: number;
   addonIds: string[];
   customerName: string;
   customerPhone: string;

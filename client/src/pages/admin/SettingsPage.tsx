@@ -49,6 +49,13 @@ export const SettingsPage: React.FC = () => {
   const [welcomePopupCouponCode, setWelcomePopupCouponCode] = useState('WELCOME20');
   const [welcomePopupDiscountText, setWelcomePopupDiscountText] = useState('FLAT 20% OFF');
 
+  // Google Reviews & Notice Buffer States
+  const [googleReviewUrl, setGoogleReviewUrl] = useState('');
+  const [googlePlaceId, setGooglePlaceId] = useState('');
+  const [googlePlacesApiKey, setGooglePlacesApiKey] = useState('');
+  const [sameDayNoticeMinutes, setSameDayNoticeMinutes] = useState('60');
+  const [syncingReviews, setSyncingReviews] = useState(false);
+
   useEffect(() => {
     const loadSettings = async () => {
       try {
@@ -84,6 +91,10 @@ export const SettingsPage: React.FC = () => {
         setWelcomePopupSubtitle(map['welcome_popup_subtitle'] || 'Get 20% OFF on your very first private theatre booking experience!');
         setWelcomePopupCouponCode(map['welcome_popup_coupon_code'] || 'WELCOME20');
         setWelcomePopupDiscountText(map['welcome_popup_discount_text'] || 'FLAT 20% OFF');
+        setGoogleReviewUrl(map['google_review_url'] || 'https://maps.google.com');
+        setGooglePlaceId(map['google_place_id'] || '');
+        setGooglePlacesApiKey(map['google_places_api_key'] || '');
+        setSameDayNoticeMinutes(map['same_day_notice_minutes'] || '60');
       } catch (err: any) {
         toast('error', 'Failed to load business settings');
       } finally {
@@ -124,12 +135,28 @@ export const SettingsPage: React.FC = () => {
         { key: 'welcome_popup_subtitle', value: welcomePopupSubtitle },
         { key: 'welcome_popup_coupon_code', value: welcomePopupCouponCode },
         { key: 'welcome_popup_discount_text', value: welcomePopupDiscountText },
+        { key: 'google_review_url', value: googleReviewUrl },
+        { key: 'google_place_id', value: googlePlaceId },
+        { key: 'google_places_api_key', value: googlePlacesApiKey },
+        { key: 'same_day_notice_minutes', value: sameDayNoticeMinutes },
       ]);
       toast('success', 'Settings saved successfully!');
     } catch (err: any) {
       toast('error', 'Failed to save settings');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleSyncGoogleReviews = async () => {
+    try {
+      setSyncingReviews(true);
+      const res = await adminApi.syncGoogleReviews(googlePlaceId, googlePlacesApiKey);
+      toast('success', `Synced ${res.count} reviews from ${res.source === 'GOOGLE_API' ? 'Google Places API' : 'Verified Google Reviews'}!`);
+    } catch (err: any) {
+      toast('error', err.response?.data?.error || 'Failed to sync Google reviews');
+    } finally {
+      setSyncingReviews(false);
     }
   };
 
@@ -508,6 +535,85 @@ export const SettingsPage: React.FC = () => {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Google Reviews & Automation Settings */}
+        <div className="bg-brand-dark p-6 rounded-2xl border border-gray-800 space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-gray-800 pb-4">
+            <div>
+              <h3 className="text-lg font-heading font-semibold text-white flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-blue-500" />
+                Google Reviews & Booking Notice Buffer
+              </h3>
+              <p className="text-xs text-gray-400 mt-0.5">
+                Configure your Google Maps review link, live Places API sync, and same-day notice buffer.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={handleSyncGoogleReviews}
+              disabled={syncingReviews}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white text-xs font-semibold shadow-md shadow-blue-500/20 transition-all cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>{syncingReviews ? 'Syncing Reviews...' : 'Sync Google Reviews'}</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="md:col-span-2">
+              <label className="block text-xs font-medium text-gray-300 mb-1">Direct Google Review URL *</label>
+              <input
+                type="url"
+                required
+                value={googleReviewUrl}
+                onChange={(e) => setGoogleReviewUrl(e.target.value)}
+                placeholder="https://g.page/r/.../review or https://maps.google.com"
+                className="w-full bg-brand-darker border border-gray-800 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+              />
+              <span className="text-[11px] text-gray-500 mt-1 block">
+                This link is automatically sent to the customer on WhatsApp upon Check-Out and opened by the "Write a Review on Google" button on the home page.
+              </span>
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-300 mb-1">Google Place ID (Optional)</label>
+              <input
+                type="text"
+                value={googlePlaceId}
+                onChange={(e) => setGooglePlaceId(e.target.value)}
+                placeholder="e.g. ChIJ... (From Google Place ID Finder)"
+                className="w-full bg-brand-darker border border-gray-800 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-gray-300 mb-1">Google Places API Key (Optional)</label>
+              <input
+                type="password"
+                value={googlePlacesApiKey}
+                onChange={(e) => setGooglePlacesApiKey(e.target.value)}
+                placeholder="AIzaSy... (For automatic live API sync)"
+                className="w-full bg-brand-darker border border-gray-800 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+              />
+            </div>
+
+            <div className="md:col-span-2">
+              <label className="block text-xs font-medium text-gray-300 mb-1">Same-Day Preparation Notice Buffer (Minutes)</label>
+              <input
+                type="number"
+                min="0"
+                max="240"
+                required
+                value={sameDayNoticeMinutes}
+                onChange={(e) => setSameDayNoticeMinutes(e.target.value)}
+                className="w-full sm:w-48 bg-brand-darker border border-gray-800 rounded-lg px-3.5 py-2 text-sm text-white focus:outline-none focus:border-blue-500"
+              />
+              <span className="text-[11px] text-gray-500 mt-1 block">
+                When customers book for "TODAY", slots starting earlier than this buffer (e.g. 60 mins from right now) will be disabled to give staff time to prepare decorations and cake.
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 

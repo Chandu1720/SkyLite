@@ -22,6 +22,8 @@ export const settingsService = {
             'upi_id', 'upi_payee_name',
             'welcome_popup_enabled', 'welcome_popup_title', 'welcome_popup_subtitle',
             'welcome_popup_coupon_code', 'welcome_popup_discount_text',
+            'google_review_url', 'google_place_id', 'google_average_rating', 'google_total_reviews',
+            'same_day_notice_minutes',
           ],
         },
       },
@@ -54,6 +56,11 @@ export const settingsService = {
       welcomePopupSubtitle: map['welcome_popup_subtitle'] || 'Get 20% OFF on your first private theatre booking',
       welcomePopupCouponCode: map['welcome_popup_coupon_code'] || 'WELCOME20',
       welcomePopupDiscountText: map['welcome_popup_discount_text'] || 'Use code at checkout for instant savings',
+      googleReviewUrl: map['google_review_url'] || 'https://maps.google.com',
+      googlePlaceId: map['google_place_id'] || '',
+      averageRating: parseFloat(map['google_average_rating'] || '4.9'),
+      totalReviewsCount: parseInt(map['google_total_reviews'] || '520', 10),
+      sameDayNoticeMinutes: parseInt(map['same_day_notice_minutes'] || '60', 10),
     };
   },
 

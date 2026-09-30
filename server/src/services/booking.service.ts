@@ -13,6 +13,7 @@ export const bookingService = {
     theatreId: string;
     slotId: string;
     packageId: string;
+    durationMinutes?: number;
     addonIds: string[];
     customerName: string;
     customerPhone: string;
@@ -99,6 +100,7 @@ export const bookingService = {
           theatreId: data.theatreId,
           occasionId: data.occasionId,
           packageId: data.packageId,
+          durationMinutes: data.durationMinutes || 120,
           slotId: data.slotId,
           date: slot.date,
           startTime: slot.startTime,
