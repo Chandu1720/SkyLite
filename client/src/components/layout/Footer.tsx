@@ -40,7 +40,15 @@ export const Footer = () => {
             <ul className="flex flex-col gap-4 font-body text-sm text-gray-400">
               <li className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
-                <span>Near Hanuman Temple, Pappannareddy Layout, signal<br />Garvebhavi Palya, Bengaluru, Karnataka 560068</span>
+                <a
+                  href="https://www.google.com/maps/place/SKYLITE+PRIVATE+THEATRE/@12.8948315,77.6334722,17z/data=!3m1!4b1!4m6!3m5!1s0x3bae15e2f14d2377:0x47d46b1bedcb865d!8m2!3d12.8948263!4d77.6360471!16s%2Fg%2F11nv10h_pq"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-blue-400 transition-colors"
+                >
+                  Near Hanuman Temple, Pappannareddy Layout, signal<br />Garvebhavi Palya, Bengaluru, Karnataka 560068
+                  <span className="block text-xs text-blue-400 mt-1 font-medium">📍 View on Google Maps ↗</span>
+                </a>
               </li>
               <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />

@@ -19,6 +19,8 @@ import {
   Menu,
   X,
   Bell,
+  Image as ImageIcon,
+  Star,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { ThemeToggle } from '../ui/ThemeToggle';
@@ -33,6 +35,8 @@ const navigation = [
   { name: 'Occasions', href: '/admin/occasions', icon: PartyPopper },
   { name: 'Packages', href: '/admin/packages', icon: PackageOpen },
   { name: 'Add-ons', href: '/admin/addons', icon: PlusSquare },
+  { name: 'Gallery', href: '/admin/gallery', icon: ImageIcon },
+  { name: 'Reviews', href: '/admin/reviews', icon: Star },
   { name: 'Coupons', href: '/admin/coupons', icon: Tag },
   { name: 'Customers', href: '/admin/customers', icon: Users },
   { name: 'Payments', href: '/admin/payments', icon: CreditCard, hasBadge: true },

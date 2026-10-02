@@ -255,6 +255,30 @@ export interface CreateCouponInput {
 
 export interface UpdateCouponInput extends Partial<CreateCouponInput> {}
 
+// ---- Gallery ----
+export interface GalleryImageDTO {
+  id: string;
+  title: string;
+  imageUrl: string;
+  category: string;
+  description?: string | null;
+  displayOrder: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateGalleryImageRequest {
+  title: string;
+  imageUrl: string;
+  category: string;
+  description?: string;
+  displayOrder?: number;
+  isActive?: boolean;
+}
+
+export interface UpdateGalleryImageRequest extends Partial<CreateGalleryImageRequest> {}
+
 // ---- Dashboard ----
 export interface DashboardStats {
   todayBookings: number;

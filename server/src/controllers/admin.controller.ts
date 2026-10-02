@@ -511,4 +511,101 @@ export const deleteCoupon = async (req: AuthRequest, res: Response, next: NextFu
   } catch (error) { next(error); }
 };
 
+// GALLERY
+import { galleryService } from '../services/gallery.service';
+
+export const getAdminGalleryImages = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const category = req.query.category as string | undefined;
+    const images = await galleryService.getAll(false, category);
+    res.json({ success: true, data: images });
+  } catch (error) { next(error); }
+};
+
+export const createGalleryImage = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { title, imageUrl, category, description, displayOrder, isActive } = req.body;
+    if (!title || !imageUrl) {
+      return res.status(400).json({ success: false, error: 'Title and image URL are required' });
+    }
+    const item = await galleryService.create({
+      title,
+      imageUrl,
+      category: category || 'birthdays',
+      description,
+      displayOrder: displayOrder ? Number(displayOrder) : 0,
+      isActive: isActive !== false,
+    });
+    await auditService.log(req.admin.id, 'CREATE', 'GalleryImage', item.id);
+    res.status(201).json({ success: true, data: item, message: 'Gallery image added successfully' });
+  } catch (error) { next(error); }
+};
+
+export const updateGalleryImage = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const item = await galleryService.update(req.params.id as string, req.body);
+    await auditService.log(req.admin.id, 'UPDATE', 'GalleryImage', item.id);
+    res.json({ success: true, data: item, message: 'Gallery image updated successfully' });
+  } catch (error) { next(error); }
+};
+
+export const deleteGalleryImage = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    await galleryService.delete(req.params.id as string);
+    await auditService.log(req.admin.id, 'DELETE', 'GalleryImage', req.params.id as string);
+    res.json({ success: true, message: 'Gallery image removed successfully' });
+  } catch (error) { next(error); }
+};
+
+// REVIEWS MANAGEMENT
+export const getAdminReviews = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const reviews = await prisma.review.findMany({
+      orderBy: [{ displayOrder: 'asc' }, { createdAt: 'desc' }],
+    });
+    res.json({ success: true, data: reviews });
+  } catch (error) { next(error); }
+};
+
+export const createAdminReview = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const { customerName, rating, comment, avatarUrl, relativeTime, source } = req.body;
+    if (!customerName || !comment) {
+      return res.status(400).json({ success: false, error: 'Customer name and comment are required' });
+    }
+    const review = await prisma.review.create({
+      data: {
+        customerName,
+        rating: Number(rating) || 5,
+        comment,
+        avatarUrl: avatarUrl || null,
+        relativeTime: relativeTime || 'Recently',
+        source: source || 'GOOGLE',
+        isActive: true,
+      },
+    });
+    await auditService.log(req.admin.id, 'CREATE', 'Review', review.id);
+    res.status(201).json({ success: true, data: review, message: 'Review added successfully' });
+  } catch (error) { next(error); }
+};
+
+export const updateAdminReview = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    const review = await prisma.review.update({
+      where: { id: req.params.id as string },
+      data: req.body,
+    });
+    await auditService.log(req.admin.id, 'UPDATE', 'Review', review.id);
+    res.json({ success: true, data: review, message: 'Review updated successfully' });
+  } catch (error) { next(error); }
+};
+
+export const deleteAdminReview = async (req: AuthRequest, res: Response, next: NextFunction) => {
+  try {
+    await prisma.review.delete({ where: { id: req.params.id as string } });
+    await auditService.log(req.admin.id, 'DELETE', 'Review', req.params.id as string);
+    res.json({ success: true, message: 'Review deleted successfully' });
+  } catch (error) { next(error); }
+};
+
 

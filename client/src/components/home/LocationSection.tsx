@@ -6,8 +6,8 @@ import { useSettings } from '../../hooks/useSettings';
 export const LocationSection = () => {
   const { settings } = useSettings();
   const address = settings?.address || 'Near Hanuman Temple, Pappannareddy Layout, Garvebhavi Palya, Bengaluru, Karnataka 560068';
-  const mapUrl = settings?.googleMapsUrl || 'https://maps.google.com';
-  const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(address)}&output=embed`;
+  const mapUrl = settings?.googleMapsUrl || 'https://www.google.com/maps/place/SKYLITE+PRIVATE+THEATRE/@12.8948315,77.6334722,17z/data=!3m1!4b1!4m6!3m5!1s0x3bae15e2f14d2377:0x47d46b1bedcb865d!8m2!3d12.8948263!4d77.6360471!16s%2Fg%2F11nv10h_pq';
+  const mapEmbedUrl = 'https://maps.google.com/maps?q=12.8948263,77.6360471+(SKYLITE+PRIVATE+THEATRE)&z=17&output=embed';
   const hours = settings ? `${settings.openingTime} - ${settings.closingTime}` : '10:00 - 22:00';
 
   return (

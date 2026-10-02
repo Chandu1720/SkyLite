@@ -11,6 +11,7 @@ import {
   getReviews,
   getPublicSettings,
   validateCoupon,
+  getGalleryImages,
 } from '../controllers/public.controller';
 
 const router = Router();
@@ -26,6 +27,7 @@ router.get('/packages', getPackages);
 router.get('/addons', getAddons);
 router.get('/slots', getSlots);
 router.get('/reviews', getReviews);
+router.get('/gallery', getGalleryImages);
 router.get('/settings/public', getPublicSettings);
 router.post('/coupons/validate', validateCoupon);
 

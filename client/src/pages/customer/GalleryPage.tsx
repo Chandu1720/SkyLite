@@ -80,9 +80,34 @@ const galleryItems: GalleryItem[] = [
   },
 ];
 
+import { galleryApi } from '../../api/gallery';
+
 export const GalleryPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [activeItem, setActiveItem] = useState<GalleryItem | null>(null);
+  const [items, setItems] = useState<GalleryItem[]>(galleryItems);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    galleryApi
+      .getAll()
+      .then((data) => {
+        if (data && data.length > 0) {
+          setItems(
+            data.map((d) => ({
+              id: d.id,
+              title: d.title,
+              category: d.category as any,
+              categoryLabel: d.category.charAt(0).toUpperCase() + d.category.slice(1),
+              imageUrl: d.imageUrl,
+              description: d.description || '',
+            }))
+          );
+        }
+      })
+      .catch((err) => console.error('Failed to load gallery images:', err))
+      .finally(() => setLoading(false));
+  }, []);
 
   const categories = [
     { id: 'all', label: 'All Photos' },
@@ -94,8 +119,8 @@ export const GalleryPage: React.FC = () => {
   ];
 
   const filteredItems = selectedCategory === 'all'
-    ? galleryItems
-    : galleryItems.filter((item) => item.category === selectedCategory);
+    ? items
+    : items.filter((item) => item.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-brand-darker text-white pt-24 pb-20 relative overflow-hidden">

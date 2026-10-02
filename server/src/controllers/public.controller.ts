@@ -127,3 +127,13 @@ export const validateCoupon = async (req: Request, res: Response, next: NextFunc
   }
 };
 
+import { galleryService } from '../services/gallery.service';
+
+export const getGalleryImages = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const category = req.query.category as string | undefined;
+    const images = await galleryService.getAll(true, category);
+    res.json({ success: true, data: images });
+  } catch (error) { next(error); }
+};
+

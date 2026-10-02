@@ -92,4 +92,16 @@ router.delete('/coupons/:id', adminCtrl.deleteCoupon);
 // Media Upload
 router.post('/upload', uploadScreenshot.single('image'), adminCtrl.uploadMedia);
 
+// Gallery
+router.get('/gallery', adminCtrl.getAdminGalleryImages);
+router.post('/gallery', adminCtrl.createGalleryImage);
+router.put('/gallery/:id', adminCtrl.updateGalleryImage);
+router.delete('/gallery/:id', adminCtrl.deleteGalleryImage);
+
+// Reviews
+router.get('/reviews', adminCtrl.getAdminReviews);
+router.post('/reviews', adminCtrl.createAdminReview);
+router.put('/reviews/:id', adminCtrl.updateAdminReview);
+router.delete('/reviews/:id', adminCtrl.deleteAdminReview);
+
 export default router;

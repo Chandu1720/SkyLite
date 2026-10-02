@@ -286,3 +286,18 @@ model Coupon {
   @@index([code])
   @@index([isActive])
 }
+
+model GalleryImage {
+  id           String   @id @default(uuid())
+  title        String
+  imageUrl     String
+  category     String   @default("birthdays")
+  description  String?
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([category])
+  @@index([isActive])
+}

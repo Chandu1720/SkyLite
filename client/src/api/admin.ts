@@ -21,6 +21,9 @@ import type {
   CreateSlotRequest,
   AdminCreateBookingRequest,
   AdminLoginRequest,
+  GalleryImageDTO,
+  CreateGalleryImageRequest,
+  UpdateGalleryImageRequest,
 } from '@skylite/shared';
 
 // ---- Auth ----
@@ -244,6 +247,27 @@ export const adminApi = {
   syncGoogleReviews: async (placeId?: string, apiKey?: string): Promise<{ count: number; source: string }> => {
     const { data } = await api.post<ApiResponse<{ count: number; source: string }>>('/admin/reviews/sync-google', { placeId, apiKey });
     return data.data!;
+  },
+  deleteReview: async (id: string): Promise<void> => {
+    await api.delete(`/admin/reviews/${id}`);
+  },
+
+  // ---- Gallery ----
+  getGalleryImages: async (category?: string): Promise<GalleryImageDTO[]> => {
+    const params = category && category !== 'all' ? { category } : {};
+    const { data } = await api.get<ApiResponse<GalleryImageDTO[]>>('/admin/gallery', { params });
+    return data.data || [];
+  },
+  createGalleryImage: async (image: CreateGalleryImageRequest): Promise<GalleryImageDTO> => {
+    const { data } = await api.post<ApiResponse<GalleryImageDTO>>('/admin/gallery', image);
+    return data.data!;
+  },
+  updateGalleryImage: async (id: string, image: UpdateGalleryImageRequest): Promise<GalleryImageDTO> => {
+    const { data } = await api.put<ApiResponse<GalleryImageDTO>>(`/admin/gallery/${id}`, image);
+    return data.data!;
+  },
+  deleteGalleryImage: async (id: string): Promise<void> => {
+    await api.delete(`/admin/gallery/${id}`);
   },
 
   // ---- Coupons ----

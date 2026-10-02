@@ -36,6 +36,8 @@ import { OccasionsPage as AdminOccasionsPage } from './pages/admin/OccasionsPage
 import { PackagesPage as AdminPackagesPage } from './pages/admin/PackagesPage';
 import { AddOnsPage as AdminAddOnsPage } from './pages/admin/AddOnsPage';
 import { CouponsPage as AdminCouponsPage } from './pages/admin/CouponsPage';
+import { GalleryPage as AdminGalleryPage } from './pages/admin/GalleryPage';
+import { ReviewsPage as AdminReviewsPage } from './pages/admin/ReviewsPage';
 import { CustomersPage as AdminCustomersPage } from './pages/admin/CustomersPage';
 import { PaymentsPage as AdminPaymentsPage } from './pages/admin/PaymentsPage';
 import { ReportsPage as AdminReportsPage } from './pages/admin/ReportsPage';
@@ -175,6 +177,22 @@ const App: React.FC = () => {
               element={
                 <ProtectedAdminRoute>
                   <AdminCouponsPage />
+                </ProtectedAdminRoute>
+              }
+            />
+            <Route
+              path="/admin/gallery"
+              element={
+                <ProtectedAdminRoute>
+                  <AdminGalleryPage />
+                </ProtectedAdminRoute>
+              }
+            />
+            <Route
+              path="/admin/reviews"
+              element={
+                <ProtectedAdminRoute>
+                  <AdminReviewsPage />
                 </ProtectedAdminRoute>
               }
             />
